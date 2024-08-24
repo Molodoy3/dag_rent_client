@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AccountsController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\NotificationManagerController;
 use App\Http\Controllers\PlatformController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
@@ -13,6 +15,28 @@ use Inertia\Inertia;
 
 //для удаления сообщения
 //Route::post('delete-flash-message', [AccountsController::class, 'deleteFlashMessage'])->name('delete-flash-message');
+
+
+//главная
+Route::get('/', [ProductController::class, 'index'])->name('products.index');
+//Клиентская часть
+Route::resource('products', ProductController::class)->only(['index', 'show']);
+//для обновления
+Route::get('/get-update-products', [ProductController::class, 'get'])->name('products.get');
+//покупка
+Route::post('/products/buy', [ProductController::class, 'buy'])->name('products.buy');
+//чаты (хороший способ как все пути формировать для контроллера)
+Route::controller(ChatController::class)
+    ->middleware('auth')
+    ->prefix('chats')
+    ->as('chats.')
+    ->group(function () {
+        //ресурсы тут не робят почему-то
+        //Route::resource('chats', ChatController::class)->only(['index', 'show']);
+        Route::get('/', 'index')->name('index');
+        Route::post('/{chat}/message', 'message')->name('message');
+    });
+Route::get('chats/{chat}', [ChatController::class, 'show'])->name('chats.show');
 
 //Юзеры
 Route::get('login', [UserController::class, 'create'])->name('user.login');
@@ -28,15 +52,14 @@ Route::put('update-password', [UserController::class, 'updatePassword'])->name('
 //Все админское
 Route::middleware(AdminMiddleware::class)->group(function () {
     //Аккаунты
-    Route::get('/', [AccountsController::class, 'index'])->name('accounts.index');
-    Route::resource('accounts', AccountsController::class);
+    Route::resource('accounts', AccountsController::class)->except(['show']);
     //из-за того, что put не хочет передавать файлы, используем дополнительный путь с post запросом для обновления аккаунта
     Route::post('/accounts/{id}', [AccountsController::class, 'update'])->name('account.update');
     //для обновления
     Route::get('/get-update-accounts', [AccountsController::class, 'get'])->name('account.get');
 
     //Статистика для акков
-    Route::resource('statistics', StatisticController::class);
+    Route::resource('statistics', StatisticController::class)->except(['show']);
     //для обновления
     Route::get('/get-update-statistics', [StatisticController::class, 'get']);
 
@@ -45,8 +68,8 @@ Route::middleware(AdminMiddleware::class)->group(function () {
     Route::post('/user/create', [UserController::class, 'storeNew'])->name('user.storeNew');
 
     //игры и платформы
-    Route::resource('games', GameController::class);
-    Route::resource('platforms', PlatformController::class);
+    Route::resource('games', GameController::class)->except(['show']);
+    Route::resource('platforms', PlatformController::class)->except(['show']);
 
 });
 

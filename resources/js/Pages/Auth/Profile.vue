@@ -32,13 +32,12 @@ function submitUserIcon(image) {
 
 <template>
     <DefaultLayout>
-
         <Head :title="'Профиль ' + user.name"></Head>
         <section class="profile">
             <div class="profile__container">
                 <div class="profile__header">
                     <div class="profile__icon">
-                        <img v-bind:src="userIcon" alt="user icon">
+                        <img v-bind:src="userIcon" alt="user icon" data-open-image>
                         <form v-if="user.id == $page.props.auth.id" action="#" enctype="multipart/form-data">
                             <label class="profile__edit-user-icon" for="image">
                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"

@@ -31,7 +31,11 @@ class AccountData extends Data
         public ?int $status,
         #[Max(3000)]
         public ?string $comment,
-        public int $user_id
+        public int $user_id,
+        #[Max(255)]
+        public ?string $title,
+        #[Max(1000)]
+        public ?string $description,
     )
     {
     }

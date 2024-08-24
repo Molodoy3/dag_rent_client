@@ -1,24 +1,23 @@
 <script setup lang="ts">
 
-import { onMounted, onUnmounted, PropType, ref, watch } from "vue";
-import AccountData = App.Data.AccountData;
-import { Head, router, Link } from "@inertiajs/vue3";
+import {onMounted, onUnmounted, ref, watch} from "vue";
+import {Head, router, Link} from "@inertiajs/vue3";
 import DefaultLayout from "../Layouts/DefaultLayout.vue";
 import Title from "../Components/Title.vue";
-import { useClipboard } from '@vueuse/core';
+import {useClipboard} from '@vueuse/core';
 import dayjs from 'dayjs';//sail npm i dayjs
 import Button from "../Components/Button.vue";
-import { initCustomSelect } from "../../modules/customSelect";
+import {initCustomSelect} from "../../modules/customSelect";
 //import Pagination from "@/Components/Pagination.vue";
 //import algoliasearch from 'algoliasearch/lite';
 
-const { copy, text } = useClipboard({});
+const {copy, text} = useClipboard({});
 
 const props = defineProps({
     'accounts': Object,
     "flash": Object,
     "platforms": Object,
-    "links": Object,
+    //"links": Object,
     'accountInfo': Object
 });
 
@@ -36,6 +35,7 @@ let timer = null;
 const getAccounts = () => {
     updateAccounts();
 };
+
 async function updateAccounts() {
     try {
         const params = new URLSearchParams({
@@ -125,8 +125,8 @@ watch(search, (value) => {
     //если текущая страница не первая, то перезагружаем на первую
     if (accounts.value.current_page > 1) {
         router.get(
-            "/",
-            { search: search.value, platform_id: platform_id.value, page: 1 },
+            "/accounts",
+            {search: search.value, platform_id: platform_id.value, page: 1},
             {
                 //сохранение состояния (без перезагрузки)
                 preserveState: true,
@@ -137,14 +137,14 @@ watch(search, (value) => {
         updateAccounts();
 });
 
-//следим за изменением платформы в фильре
+//следим за изменением платформы в фильтре
 let platform_id = ref('');
 watch(platform_id, (value) => {
     //если текущая страница не первая, то перезагружаем на первую
     if (accounts.value.current_page > 1) {
         router.get(
-            "/",
-            { search: search.value, platform_id: platform_id.value, page: 1 },
+            "/accounts",
+            {search: search.value, platform_id: platform_id.value, page: 1},
             {
                 //сохранение состояния (без перезагрузки)
                 preserveState: true,
@@ -154,10 +154,11 @@ watch(platform_id, (value) => {
     } else
         updateAccounts();
 });
+
 function onPlatformChange(id) {
     platform_id.value = id;
-
 }
+
 //для сохранения сообщения при обновлении
 //const flash = props.flash.message;
 //const mess = ref(flash);
@@ -201,7 +202,7 @@ onUnmounted(() => {
 function nextPaginate(url) {
     router.get(
         url,
-        { search: search.value, platform_id: platform_id.value },
+        {search: search.value, platform_id: platform_id.value},
         {
             //сохранение состояния (без перезагрузки)
             preserveState: true,
@@ -214,71 +215,37 @@ function nextPaginate(url) {
 
 <template>
     <DefaultLayout>
-
         <Head title="Аккаунты"></Head>
         <section class="accounts">
-            <!--            <ais-instant-search id="search-wrap" :search-client="client" index-name="accounts" class='accounts__container'>
-                            <div class="accounts__header">
-                                <Title>Все аккаунты</Title>
-                                <ais-search-box placeholder="Поиск аккаунтов..."></ais-search-box>
-                            </div>
-                            <a :href="route('accounts.create')" class="accounts__add button">Добавить</a><br>
-                            <div v-if="$page.props.flash.message" class="message">
-                                <button  class="button-delete-message">X</button>
-                                {{$page.props.flash.message}}
-                            </div>
-                            <ais-hits>
-                                    <template v-slot:item="{ item }">
-                                        <div class="accounts__item" :class="{ 'accounts__item_busy': item.busy, 'accounts__item_process': item.status == 1, 'accounts__item_problem': item.status == 2}">
-                                            <h3 class="accounts__title-item">{{ item.games }}</h3>
-                                            <div class="accounts__info">
-                                                <div class="accounts__info-title">Логин:</div> <span class="accounts__weight">{{
-                                                    item.login }}</span>
-                                            </div>
-                                            <div class="accounts__info">
-                                                <div class="accounts__info-title">Пароль:</div> <span class="accounts__weight">{{
-                                                    item.password }}</span>
-                                            </div>
-                                            <div class="accounts__status">
-                                                <div class="accounts__free" v-if="item.busy == null && item.status == null">Свободен</div>
-                                                <div class="accounts__process" v-if="item.status == 1">В процессе публикации</div>
-                                                <div class="accounts__problem" v-if="item.status == 2">Проблема(ы)</div>
-                                                <div class="accounts__date" v-if="item.busy && item.status == null">{{ formatDate(item.busy) }}</div>
-                                            </div>
-                                            <div class="accounts__buttons">
-                                                <Button @click="router.get('/accounts/' + item.id + '/edit')">Перейти</Button>
-                                                <Button @click="copy('Логин: ' + item.login + ' \\n Пароль: ' + item.password)" class="accounts__copy">Копировать</Button>
-                                            </div>
-                                        </div>
-                                    </template>
-</ais-hits>
-</ais-instant-search>-->
             <div class='accounts__container'>
                 <div class="accounts__header">
                     <Title>Все аккаунты</Title>
                     <div class="search-col">
                         <div class="form__custom-select-body" data-custom-select="Платформа">
                             <select data-options v-model="platform_id" id="platformId" class="form__select">
-                                <option value="0">Сброс</option>
+                                <option value="0">Платформа</option>
                                 <option :selected="platform.id == platform_id" v-for="platform in platforms"
-                                    :value='platform.id'>{{
-                                        platform.name }}
+                                        :value='platform.id'>{{
+                                        platform.name
+                                    }}
                                 </option>
                             </select>
                             <div class="form__custom-select custom-select-form input">
                                 <input style="visibility:collapse; margin: 0; position: absolute;" type="text"
-                                    class="custom-select-form__field custom-select-form__input input" data-input-search
-                                    placeholder="Платформа">
+                                       class="custom-select-form__field custom-select-form__input input"
+                                       data-input-search
+                                       placeholder="Платформа">
                                 <div data-custom-select-field class="custom-select-form__field"></div>
                                 <ul data-custom-select-options class="custom-select-form__options">
-                                    <li data-custom-select-option="0" @click="onPlatformChange('0')">Сброс</li>
+                                    <li data-custom-select-option="0" @click="onPlatformChange('0')">Платформа</li>
                                     <li @click="onPlatformChange(platform.id)" v-for="platform in platforms"
-                                        :data-custom-select-option="platform.id">{{ platform.name }}</li>
+                                        :data-custom-select-option="platform.id">{{ platform.name }}
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                         <input class="statistics__search input" v-model="search" type="text"
-                            placeholder="Поиск аккаунтов..." />
+                               placeholder="Поиск аккаунтов..."/>
                     </div>
                 </div>
                 <a :href="route('accounts.create')" class="accounts__add button">Добавить</a><br>
@@ -288,37 +255,42 @@ function nextPaginate(url) {
                 </div>
                 <div v-if="accountInfo" class="accounts__row accounts__row_top">
                     <div class="accounts__item"
-                        :class="{ 'accounts__item_busy': accountInfo.busy, 'accounts__item_process': accountInfo.status == 1, 'accounts__item_problem': accountInfo.status == 2 }">
-                        <h3 class="statistics__account-games"><span v-for="game in accountInfo.games">{{ game.name
-                                }}</span>
-                        </h3>
+                         :class="{ 'accounts__item_busy': accountInfo.busy, 'accounts__item_process': accountInfo.status == 1, 'accounts__item_problem': accountInfo.status == 2 }">
+                        <div class="accounts__top">
+                            <div class="accounts__info">
+                                <h3 class="statistics__account-games"><span v-for="game in accountInfo.games">{{
+                                        game.name
+                                    }}</span>
+                                </h3>
+                                <span class="accounts__platform">{{ accountInfo.platform.name }}</span>
+                            </div>
+                        </div>
                         <div class="accounts__info">
                             <!--                        <div class="accounts__info-title">Логин:</div>-->
                             <span @click="copy(accountInfo.login)" class="accounts__weight accounts__copy">{{
-                                accountInfo.login
+                                    accountInfo.login
                                 }}</span>
                         </div>
                         <div class="accounts__info">
                             <!--                        <div class="accounts__info-title">Пароль:</div>-->
                             <span @click="copy(accountInfo.password)" class="accounts__weight accounts__copy">{{
-                                accountInfo.password }}</span>
+                                    accountInfo.password
+                                }}</span>
                         </div>
                         <div class="accounts__clamping">
-                            <div class="accounts__info">
-                                <!--                        <div class="accounts__info-title">Пароль:</div>-->
-                                <div class="accounts__status">
-                                    <div class="accounts__free"
-                                        v-if="accountInfo.busy == null && accountInfo.status == null">
-                                        Свободен</div>
-                                    <div class="accounts__process" v-if="accountInfo.status == 1">В процессе публикации
-                                    </div>
-                                    <div class="accounts__problem" v-if="accountInfo.status == 2">Проблема(ы)</div>
-                                    <div class="accounts__date" v-if="accountInfo.busy && accountInfo.status == null">{{
-                                        formatDate(accountInfo.busy)
-                                        }}
-                                    </div>
+                            <!--                        <div class="accounts__info-title">Пароль:</div>-->
+                            <div class="accounts__status">
+                                <div class="accounts__free"
+                                     v-if="accountInfo.busy == null && accountInfo.status == null">
+                                    Свободен
                                 </div>
-                                <span class="accounts__platform">{{ accountInfo.platform.name }}</span>
+                                <div class="accounts__process" v-if="accountInfo.status == 1">В процессе публикации
+                                </div>
+                                <div class="accounts__problem" v-if="accountInfo.status == 2">Проблема(ы)</div>
+                                <div class="accounts__date" v-if="accountInfo.busy && accountInfo.status == null">{{
+                                        formatDate(accountInfo.busy)
+                                    }}
+                                </div>
                             </div>
                         </div>
                         <div class="accounts__buttons">
@@ -335,11 +307,12 @@ function nextPaginate(url) {
 
                 <div class="accounts__row">
                     <div class="accounts__item" v-for="item in accounts.data"
-                        :class="{ 'accounts__item_busy': item.busy, 'accounts__item_process': item.status == 1, 'accounts__item_problem': item.status == 2 }">
+                         :class="{ 'accounts__item_busy': item.busy, 'accounts__item_process': item.status == 1, 'accounts__item_problem': item.status == 2 }">
                         <div class="accounts__top">
                             <div class="accounts__info">
-                                <h3 class="statistics__account-games"><span v-for="game in item.games">{{ game.name
-                                        }}</span>
+                                <h3 class="statistics__account-games"><span v-for="game in item.games">{{
+                                        game.name
+                                    }}</span>
                                 </h3>
                                 <span class="accounts__platform">{{ item.platform.name }}</span>
                             </div>
@@ -348,12 +321,13 @@ function nextPaginate(url) {
                         <div class="accounts__info">
                             <!--                        <div class="accounts__info-title">Логин:</div>-->
                             <span @click="copy(item.login)" class="accounts__weight accounts__copy">{{
-                                item.login
+                                    item.login
                                 }}</span>
                         </div>
                         <div class="accounts__info">
                             <!--                        <div class="accounts__info-title">Пароль:</div>-->
-                            <span @click="copy(item.password)" class="accounts__weight accounts__copy">{{ item.password
+                            <span @click="copy(item.password)" class="accounts__weight accounts__copy">{{
+                                    item.password
                                 }}</span>
                         </div>
                         <div class="accounts__clamping">
@@ -365,7 +339,7 @@ function nextPaginate(url) {
                                     <div class="accounts__process" v-if="item.status == 1">В процессе публикации</div>
                                     <div class="accounts__problem" v-if="item.status == 2">Проблема(ы)</div>
                                     <div class="accounts__date" v-if="item.busy && item.status == null">{{
-                                        formatDate(item.busy)
+                                            formatDate(item.busy)
                                         }}
                                     </div>
                                 </div>
@@ -374,17 +348,16 @@ function nextPaginate(url) {
                         <div class="accounts__buttons">
                             <Button @click="router.get('/accounts/' + item.id + '/edit')">Перейти</Button>
                             <Button @click="copy('Логин: ' + item.login + ' \\n Пароль: ' + item.password)"
-                                class="accounts__copy">Копировать
+                                    class="accounts__copy">Копировать
                             </Button>
                         </div>
                     </div>
                     <!--                    <Pagination :data="accounts"/>-->
                 </div>
                 <ul class="pagination">
-                    <!--                тут используем props, так как ref ссылка fields менять link будет при обновлении данных и будут ссылки на json объекты -->
                     <li v-if="accounts.links.length > 3" v-for="link in accounts.links">
                         <button v-if="link.url && !link.active" :class="{ 'active': link.active, 'link': link.url }"
-                            @click="nextPaginate(link.url)" v-html="link.label">
+                                @click="nextPaginate(link.url)" v-html="link.label">
                         </button>
                         <span v-else v-html="link.label" :class="{ 'active': link.active }"></span>
                     </li>

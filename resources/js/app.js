@@ -2,6 +2,7 @@ import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import VueInstantSearch from 'vue-instantsearch/vue3/es';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import './echo.js';
 //import "./modules/smoothScroll.js";
 //import Smooth from 'smooth-scrolling';
 

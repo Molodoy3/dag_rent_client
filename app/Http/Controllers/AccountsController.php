@@ -114,7 +114,7 @@ class AccountsController extends Controller
                 ->fragment('accounts')
                 ->withQueryString(),
 
-            'links' => $accounts,
+            //'links' => $accounts,
             'accountInfo' => $idElem ? Account::query()->with("platform", "games")->find($idElem) : null,
         ]);
     }
@@ -130,7 +130,7 @@ class AccountsController extends Controller
         $idPlatform = Platform::query()->first()->id;
         $idUser = auth()->id();
         return Inertia::render("Accounts/Create", [
-            'account' => new AccountData(null, "", "", $idPlatform, null, "", "", 0, 1, "",$idUser),
+            'account' => new AccountData(null, "", "", $idPlatform, null, "", "", 0, 1, "",$idUser, null,null),
             'platforms' => Platform::all('id', 'name'),
             'games' => Game::all()
         ]);

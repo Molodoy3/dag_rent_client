@@ -87,7 +87,12 @@ function submit() {
         return;
     }
    // console.log(account.id)
-    form.post(route('account.update', { 'id': account.id, 'games': selectedGames }));
+    form.post(route('account.update', { 'id': account.id, 'games': selectedGames }),
+        {
+            //сохранение состояния (без перезагрузки)
+            preserveState: true,
+            preserveScroll: true,
+        });
     //router.put('/accounts/' + account.id, { 'games': selectedGames, 'account': form });
 }
 //Получение корректного пути для картинки

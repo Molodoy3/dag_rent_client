@@ -60,6 +60,9 @@ class Account extends Model
     public function statistic():HasMany {
         return $this->hasMany(Statistic::class);
     }
+    public function tariffs():HasMany {
+        return $this->hasMany(Tariff::class);
+    }
     public function games(): BelongsToMany
     {
         return $this->belongsToMany(Game::class, 'account_games', 'account_id', 'game_id');
@@ -71,6 +74,10 @@ class Account extends Model
     public function platform(): BelongsTo
     {
         return $this->belongsTo(Platform::class);
+    }
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     protected $fillable = [
