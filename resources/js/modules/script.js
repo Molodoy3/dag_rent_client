@@ -4,6 +4,13 @@ export function delegationClick() {
     function documentActions(e) {
         const targetElement = e.target;
 
+        if (targetElement.closest('.chats__item')) {
+            targetElement.closest('.chats__items').classList.remove('active');
+        }
+
+        if (targetElement.closest('.chats__back')) {
+            document.querySelector('.chats__items').classList.add('active');
+        }
 
         //для поиска в select
         if (document.querySelector('#searchingSelect')) {

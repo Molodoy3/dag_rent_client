@@ -80,7 +80,8 @@ class ProductController extends Controller
     public function getAccounts(Request $request): LengthAwarePaginator|string|null
     {
         $accounts = Account::query()
-            ->with('platform', 'user', 'games', 'tariffs')
+            ->with('platform', 'games', 'tariffs', 'user')
+            ->select('id', 'title', 'price', "user_id", 'platform_id')
             ->where('busy', null)
             ->where('status', null)
             ->when($request->input("platform_id") || $request->input("search") || $request->input("game_id"),
@@ -117,7 +118,7 @@ class ProductController extends Controller
             ->paginate(100)->setPath('/products')
             ->withQueryString()
             ->fragment('products');
-
+        //dd($accounts);
         //Агрегация countSales
         $accounts->each(function ($account) {
 

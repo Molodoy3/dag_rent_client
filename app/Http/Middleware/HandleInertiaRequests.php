@@ -44,6 +44,7 @@ class HandleInertiaRequests extends Middleware
         $userId = $request->user() ? $request->user()->id : null;
 
         // Логика определения изображения
+
         $userDir = Storage::disk('public')->files('/img/public/users/' . $userId);
         $userIcon = count($userDir) ? '/storage/' . $userDir[0] : '/storage/img/public/users/default.webp';
 

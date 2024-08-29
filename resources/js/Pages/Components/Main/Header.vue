@@ -20,6 +20,7 @@ import {Link, router} from "@inertiajs/vue3";
                         <li><Link :href="route('games.index')" class='menu__link'>Игры</Link></li>
                         <li><Link :href="route('platforms.index')" class='menu__link'>Платформы</Link></li>
                         <li><Link :href="route('statistics.index')" class='menu__link'>Статистика</Link></li>
+                        <li><Link :href="route('chats.index')" class='menu__link'>Чаты</Link></li>
                     </ul>
                 </nav>
             </div>
@@ -31,7 +32,7 @@ import {Link, router} from "@inertiajs/vue3";
                     <img :src="$page.props.auth.icon" alt="icon">
                 </Link>
             </div>
-            <Link v-else :href="route('user.login')" class="header__profile button">Войти</Link>
+            <Link v-else :href="route('login')" class="header__profile button">Войти</Link>
         </div>
     </header>
 </template>

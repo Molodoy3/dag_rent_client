@@ -530,7 +530,6 @@ textarea {
     }
 
 
-
     &__copy {
         background-color: var(--blue);
         color: var(--white);
@@ -962,6 +961,9 @@ textarea {
 
 /*=============================================================================================================*/
 .products {
+    &__platform {
+        text-align: right;
+    }
 
     &__container {}
 
@@ -1008,17 +1010,21 @@ textarea {
         }
 
         align-items: center;
-        &_first{
+
+        &_first {
 
             flex: 0 0 80%;
-            @media (max-width: $md2){
+
+            @media (max-width: $md2) {
                 flex: 0 0 65%;
 
             }
-            @media (max-width: $md4){
+
+            @media (max-width: $md4) {
                 flex-wrap: wrap;
             }
-            @media (max-width: 700px){
+
+            @media (max-width: 700px) {
                 flex: 0 0 100%;
             }
         }
@@ -1030,13 +1036,14 @@ textarea {
         justify-content: space-between;
         align-items: center;
         flex: 0 0 25%;
-        @media (max-width: $md4){
+
+        @media (max-width: $md4) {
             flex: 0 0 100%;
         }
     }
 
     &__games {
-        @media (min-width: $md2){
+        @media (min-width: $md2) {
 
             flex: 0 0 60%;
         }
@@ -1068,9 +1075,7 @@ textarea {
     display: flex;
     column-gap: rem(10);
 
-    &__icon {
-
-    }
+    &__icon {}
 
     &__info {}
 
@@ -1089,13 +1094,13 @@ textarea {
 /*=============================================================================================================*/
 .order {
 
-    &__container {
+    &__container {}
 
-    }
-    &__body{
+    &__body {
         max-width: rem(600);
         border-radius: rem(10);
     }
+
     &__title {}
 
     &__user {
@@ -1120,14 +1125,17 @@ textarea {
         line-height: 150%;
         @include adaptiv-value('margin-bottom', 20, 12, 1);
     }
-    .button{
+
+    .button {
         display: block;
         width: 100%;
         text-align: center;
+
         &:not(:last-child) {
             margin-bottom: rem(10);
         }
     }
+
     &__button-edit {}
 
     &__tariffs {
@@ -1135,7 +1143,8 @@ textarea {
             margin-bottom: rem(17);
         }
     }
-    .custom-select-form{
+
+    .custom-select-form {
 
         max-width: 100%;
     }
@@ -1144,6 +1153,7 @@ textarea {
 
     &__error {}
 }
+
 .icon-user {
     border-radius: 50%;
     position: relative;
@@ -1172,6 +1182,7 @@ textarea {
         border-radius: 50%;
     }
 }
+
 .user-product {
 
     &__info {}
@@ -1181,36 +1192,32 @@ textarea {
     &__count-sales {}
 }
 
-.custom-select-form{
+.custom-select-form {
     transition: background-color 0.3s ease;
+
     &:focus {
         background-color: #383838 !important;
     }
+
     @media (any-hover: hover) {
-        &:hover{
+        &:hover {
             background-color: #383838 !important;
         }
     }
 }
+
 /*=============================================================================================================*/
 .chat {
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    @media (max-width: $md4){
+
+    @media (max-width: $md4) {
         padding-top: rem(10);
         padding-bottom: rem(10);
     }
-    &__container {
-        flex: 1 1 auto;
-        display: flex;
-        max-width: rem(1000);
-        flex-direction: column;
-        max-height: calc(100vh - 225px);
-        @media (max-width: $md4){
-            max-height: calc(100vh - 166px);
-        }
-    }
+
+    &__container {}
 
     &__user {
         margin-bottom: rem(10);
@@ -1231,25 +1238,33 @@ textarea {
         border-radius: rem(7);
         display: flex;
         flex-direction: column;
+        max-width: 75%;
+
         &:not(:last-child) {
             margin-bottom: rem(10);
         }
+
         align-self: flex-start;
-        &_own{
+
+        &_own {
             align-self: flex-end;
         }
-        &_notification{
-            align-self:stretch;
+
+        &_notification {
+            align-self: stretch;
             background-color: var(--yellow);
             color: #000;
             font-weight: 700;
         }
-        p{
+
+        p {
             margin-bottom: em(3, 14);
         }
+
     }
-    &__notification-title{
-        p{
+
+    &__notification-title {
+        p {
             display: inline-block;
             background-color: #dab500;
             padding: rem(5) rem(7);
@@ -1257,9 +1272,12 @@ textarea {
         }
     }
 
-    &__bottom{
+    &__bottom {
         margin-top: rem(20);
         display: flex;
+        @media (max-width: $md3){
+            margin-top: rem(30);
+        }
     }
 
     &__time {
@@ -1272,12 +1290,245 @@ textarea {
         max-width: 100%;
         height: rem(40);
     }
-    &__submit{
+
+    &__submit {
         height: rem(40);
         display: flex;
         justify-content: center;
         align-items: center;
     }
 }
+
+/*=============================================================================================================*/
+
+.chats {
+    padding-top: rem(20);
+    padding-bottom: rem(15);
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    /* Стилизуем скроллбар */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 10px;
+    }
+
+    /* Область для бегунка скроллбара */
+    ::-webkit-scrollbar-thumb {
+        background-color: #464646;
+        border-radius: 10px;
+
+        @media (any-hover: hover) {
+            &:hover {
+                background-color: #353535;
+            }
+        }
+
+        &:active {
+            background-color: #3a3a3a;
+        }
+    }
+
+    /* Фон скроллбара */
+    ::-webkit-scrollbar-track {
+        background-color: #272727;
+    }
+
+    &__container {
+        display: flex;
+        position: relative;
+        flex: 1 1 auto;
+    }
+    &__back{
+        @media (min-width: 600px){
+            display: none;
+        }
+    }
+    &__items {
+        flex: 0 0 rem(350);
+
+        height: calc(100vh - 190px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        background-color: #202020;
+        @media (max-width: $md2){
+            flex: 0 0 rem(250);
+        }
+        @media (max-width: 600px){
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+
+            opacity: 0;
+            z-index: -1;
+            &.active{
+                opacity: 1;
+                z-index: 10;
+            }
+        }
+    }
+
+    &__item {
+        width: 100%;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+
+        &:not(:last-child) {
+            border-bottom: rem(1) solid #1f1f1f;
+        }
+
+        &:focus {
+            .chats__user {
+                background-color: #fff;
+            }
+        }
+
+        @media (any-hover: hover) {
+            &:hover {
+                .chats__user {
+                    background-color: #303030;
+                }
+            }
+        }
+
+        &_focus {
+            color: #000;
+
+            .order__user {
+                background-color: var(--yellow);
+            }
+
+            &:focus {
+                .chats__user {
+                    background-color: var(--yellow-dark);
+                }
+            }
+
+            @media (any-hover: hover) {
+                &:hover {
+                    .chats__user {
+                        background-color: var(--yellow-dark);
+                    }
+                }
+            }
+        }
+
+        &_not-read {
+            .order__user {
+                background-color: #414141;
+            }
+
+            //color: #000;
+            &:focus {
+                .chats__user {
+                    //background-color: #ffd621;
+                }
+            }
+
+            @media (any-hover: hover) {
+                &:hover {
+                    .chats__user {
+                        //background-color: #e0bd1d;
+                    }
+                }
+            }
+        }
+
+        .icon-user {
+            background-color: #202020;
+        }
+    }
+
+    &__user {
+        width: 100%;
+    }
+    .user-product__info{
+        width: 100%;
+        //padding-right: rem(100);
+
+    }
+    &__last-message {
+        span{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: rem(5);
+        }
+    }
+    &__last-message-text{
+        white-space: nowrap;   /* Запрет на перенос текста */
+        overflow: hidden;      /* Скрыть переполнение */
+        text-overflow: ellipsis; /* Показать многоточие */
+        max-width: rem(200);
+        display: inline-block;
+        @media (max-width: $md2){
+            max-width: rem(120);
+        }
+    }
+    &__date-last-message{
+        font-size: rem(11);
+        display: inline-block;
+    }
+
+    &__body {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        @media (min-width: 600px){
+            border-left: rem(1) solid #353535;
+        }
+    }
+}
+
+.chat {
+
+    &__container {}
+
+    &__user {}
+
+    &__messages {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        display: flex;
+        //max-width: rem(1000);
+        flex-direction: column;
+        max-height: calc(100vh - 330px);
+
+        @media (max-width: 600px){
+            max-height: calc(100vh - 390px);
+        }
+
+    }
+
+    &__message {}
+
+    &__notification-title {}
+
+    &__time {}
+
+    &__bottom {
+        .input{
+            border-radius: rem(0);
+            margin-bottom: 0;
+        }
+        .button{
+            border-radius: rem(0);
+        }
+    }
+
+    &__input {}
+
+    &__submit {}
+}
+
+.input {}
+
+.button {}
+
+/*=============================================================================================================*/
+/*=============================================================================================================*/
 /*=============================================================================================================*/
 /*=============================================================================================================*/

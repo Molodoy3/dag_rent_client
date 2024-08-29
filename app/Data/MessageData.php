@@ -17,6 +17,7 @@ class MessageData extends Data
         public ?string $createdAt,
         public ?User $user,
         public bool $isOwn,
+        public bool $isRead
     ) {
     }
     public static function fromModel(Message $message): static
@@ -30,6 +31,7 @@ class MessageData extends Data
                 : Carbon::parse($message->created_at)->format('d.m H:i'),
             user: $message->sender,
             isOwn: $message->sender_id === auth()->id(),
+            isRead: $message->is_read
         );
     }
 }

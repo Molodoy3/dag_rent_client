@@ -36,6 +36,7 @@ class MessageSent implements ShouldBroadcast
     {
         return [
             new PrivateChannel('Chat.'.$this->data->id),
+            new PrivateChannel('UserChats.'.$this->data->user->id),
         ];
     }
 }

@@ -22,7 +22,7 @@ Route::get('/', [ProductController::class, 'index'])->name('products.index');
 //Клиентская часть
 Route::resource('products', ProductController::class)->only(['index', 'show']);
 //для обновления
-Route::get('/get-update-products', [ProductController::class, 'get'])->name('products.get');
+Route::post('/get-update-products', [ProductController::class, 'get'])->name('products.get');
 //покупка
 Route::post('/products/buy', [ProductController::class, 'buy'])->name('products.buy');
 //чаты (хороший способ как все пути формировать для контроллера)
@@ -33,13 +33,18 @@ Route::controller(ChatController::class)
     ->group(function () {
         //ресурсы тут не робят почему-то
         //Route::resource('chats', ChatController::class)->only(['index', 'show']);
-        Route::get('/', 'index')->name('index');
         Route::post('/{chat}/message', 'message')->name('message');
     });
-Route::get('chats/{chat}', [ChatController::class, 'show'])->name('chats.show');
+
+Route::middleware('auth')->group(function () {
+    Route::post('chat/read', [ChatController::class, 'readMessages'])->name('chats.readMessages');
+    Route::post('get-chats', [ChatController::class, 'getChats'])->name('chats.getChats');
+    Route::get('chats', [ChatController::class, 'index'])->name('chats.index');
+    Route::post('chats/get', [ChatController::class, 'show'])->name('chats.show');
+});
 
 //Юзеры
-Route::get('login', [UserController::class, 'create'])->name('user.login');
+Route::get('login', [UserController::class, 'create'])->name('login');
 Route::post('login', [UserController::class, 'store'])->name('user.store');
 Route::post('logout', [UserController::class, 'logout'])->name('user.logout');
 Route::get('/users/{id}', [UserController::class, 'show'])->name('user.show');
