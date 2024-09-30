@@ -19,9 +19,9 @@ const general = ref(props.general);
 
 //для постоянного обновления статистики
 const fields = ref(props.fields);
-watch(() => props.fields, (newFields) => {
+/* watch(() => props.fields, (newFields) => {
     fields.value = newFields;
-});
+}); */
 let timer = null;
 const getUpdatingStatistics = () => {
     updateStatistics();
