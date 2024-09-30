@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         ]);
         Game::factory(5)->create();
         Platform::factory(5)->create();
-        Account::factory(5)->create();
+        //Account::factory(5)->create();
 
         //ошибку выдает
         //Statistic::factory(10)->create();

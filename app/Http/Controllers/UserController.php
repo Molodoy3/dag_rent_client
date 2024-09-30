@@ -98,7 +98,7 @@ class UserController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('user.login');
+        return redirect()->route('login');
     }
     public function updateIcon(Request $request) {
         $userID = $request->userID;
