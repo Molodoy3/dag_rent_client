@@ -124,13 +124,6 @@ class StatisticController extends Controller
             'accounts' => Account::with('games')->orderBy("login")->get(),
         ]);
     }
-    /*public function updateData() {
-        event(
-            new AccountUpdate(
-                statistics: Statistic::all()
-            )
-        );
-    }*/
     //в использовании команды CheckAccountDates (когда время аренды конается)
     public function add(Account $account) {
         Statistic::query()->create([
