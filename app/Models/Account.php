@@ -31,6 +31,17 @@ class Account extends Model
     {
         return $value ? Carbon::parse($value)->format('Y-m-d\TH:i:s.u\Z') : null;
     }
+
+
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($account) {
+            $account->statistic()->each(function ($item) {
+                $item->delete();
+            });
+        });
+    }
     //хотел преоброзовывать автоматически дату по часовому поясу пользователя, но не получилось что-то
     /*public function setBusyAttribute($value)
     {
